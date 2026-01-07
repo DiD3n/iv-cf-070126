@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MarketHistoryService } from 'src/exchanges/market-history/market-history.service';
+import { MarketHistoryService } from '../../exchanges/market-history/market-history.service';
 
 @Injectable()
 export class MarketViewService {
@@ -7,9 +7,10 @@ export class MarketViewService {
         private readonly marketHistoryService: MarketHistoryService
     ) {}
 
-    marketSymbolView() {
+    async marketSymbolView(symbol: string) {
+        const marketData = await this.marketHistoryService.getMarketHistory({ symbol });
         return {
-            marketData: this.marketHistoryService.getMarketHistory('BTCUSDT')
+            marketData
         }
     }
 }

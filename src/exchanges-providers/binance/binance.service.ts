@@ -17,7 +17,6 @@ interface RetryConfig {
     maxDelayMs: number;
 }
 
-//todo: check this
 @Injectable()
 export class BinanceService implements MarketProvider {
     private readonly logger = new Logger(BinanceService.name);
@@ -33,6 +32,7 @@ export class BinanceService implements MarketProvider {
 
     async getDepth(symbol: string, limit: number = 100): Promise<MarketSymbolData> {
         return this.executeWithRetry(async () => {
+            // todo: check for authentication if needed in future
             const response = await firstValueFrom(
                 this.httpService.get<DepthResponse>('https://api.binance.com/api/v3/depth', {
                     params: { symbol, limit },

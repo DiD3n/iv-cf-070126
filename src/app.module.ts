@@ -4,14 +4,13 @@ import { AppService } from "./app.service";
 import { ExchangesModule } from "./exchanges/exchanges.module";
 import { ViewsModule } from "./views/views.module";
 import { ExchangesProvidersModule } from "./exchanges-providers/exchanges-providers.module";
-import { MarketHistoryService } from "./exchanges/market-history/market-history.service";
 import { InfraModule } from "./infra/infra.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
-    MongooseModule.forRoot("mongodb://localhost/nest"),
+    MongooseModule.forRoot(process.env.MDB_CONNECTION_STRING || ''),
     ScheduleModule.forRoot(),
     ExchangesModule,
     ViewsModule,
@@ -19,6 +18,6 @@ import { ScheduleModule } from "@nestjs/schedule";
     InfraModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MarketHistoryService],
+  providers: [AppService],
 })
 export class AppModule {}

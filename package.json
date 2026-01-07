@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/schedule": "^6.1.0",
     "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
     "express-handlebars": "^8.0.4",
     "hbs": "^4.2.0",
     "mongoose": "^9.1.2",

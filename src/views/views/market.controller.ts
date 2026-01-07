@@ -1,16 +1,19 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { MarketViewService } from './market-view.service';
 
-@Controller('views')
+@Controller()
 export class ViewsController {
 
     constructor(
         private readonly marketViewService: MarketViewService
     ) {}
 
-    @Get('/')
-    @Render('home')
+    @Get('/test')
+    @Render('index')
     getHomePage() {
-        return { message: 'Welcome to the Home Page!' };
+        const getData = this.marketViewService.marketSymbolView('BTCUSDT'); //todo: move to query param
+        console.log('Market Data:', getData);
+
+        return { message: JSON.stringify(getData) };
     }
 }

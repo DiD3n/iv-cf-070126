@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MarketHistoryService } from './market-history/market-history.service';
-import { MarketCollectorService } from './market-collector/market-collector.service';
-import { ExchangesProvidersModule } from 'src/exchanges-providers/exchanges-providers.module';
+import { ExchangesProvidersModule } from '../exchanges-providers/exchanges-providers.module';
+import { InfraModule } from '../infra/infra.module';
 
 @Module({
-  imports: [ExchangesProvidersModule],
-  providers: [MarketHistoryService, MarketCollectorService]
+  imports: [ExchangesProvidersModule, InfraModule],
+  exports: [MarketHistoryService],
+  providers: [MarketHistoryService]
 })
 export class ExchangesModule {}
