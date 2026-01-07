@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { Interval } from '@nestjs/schedule';
 
 @Injectable()
-export class MarketCollectorService {}
+export class MarketCollectorService {
+    private logger = new Logger(MarketCollectorService.name);
+    
+}
