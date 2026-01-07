@@ -1,4 +1,94 @@
-Hello, world! TEST
-<div style="color: red;">
-    {{message ?? 'No message provided.'}}
+<h1>Market Order Book</h1>
+<div style="width: 90%; max-width: 1200px; margin: 20px auto;">
+    <canvas id="orderBookChart"></canvas>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const rawData = {{{marketData}}};
+    
+    // Prepare data - reverse bids so they go from low to high price
+    const bids = [...rawData.bids].reverse();
+    const asks = rawData.asks;
+    
+    // Combine and create labels (prices)
+    const bidPrices = bids.map(b => parseFloat(b[0]));
+    const bidQuantities = bids.map(b => parseFloat(b[1]));
+    const askPrices = asks.map(a => parseFloat(a[0]));
+    const askQuantities = asks.map(a => parseFloat(a[1]));
+    
+    // Create floating bar data: [bottom, top] for each bar
+    const bidFloatData = bidQuantities.map(q => [-q, 0]);
+    const askFloatData = askQuantities.map(q => [0, q]);
+    
+    // Combined prices for x-axis
+    const allPrices = [...bidPrices, ...askPrices];
+    
+    // Pad datasets to match combined length
+    const bidData = [...bidFloatData, ...new Array(askPrices.length).fill([0, 0])];
+    const askData = [...new Array(bidPrices.length).fill([0, 0]), ...askFloatData];
+    
+    const ctx = document.getElementById('orderBookChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: allPrices.map(p => p.toFixed(2)),
+            datasets: [
+                {
+                    label: 'Bids (Buy)',
+                    data: bidData,
+                    backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Asks (Sell)',
+                    data: askData,
+                    backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `${rawData.symbol} Order Book (${rawData.exchange})`,
+                    font: { size: 18 }
+                },
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            const qty = Math.abs(value[0]) || Math.abs(value[1]);
+                            return `${context.dataset.label}: ${qty}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Price (USDT)'
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Quantity'
+                    }
+                }
+            }
+        }
+    });
+</script>

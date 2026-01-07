@@ -8,9 +8,9 @@ export class MarketViewService {
     ) {}
 
     async marketSymbolView(symbol: string) {
-        const marketData = await this.marketHistoryService.getMarketHistory({ symbol });
+        const marketData = await this.marketHistoryService.getMarketData(symbol, 100, "debug");
         return {
-            marketData
+            marketData: JSON.stringify(marketData)
         }
     }
 }

@@ -8,12 +8,15 @@ export class ViewsController {
         private readonly marketViewService: MarketViewService
     ) {}
 
-    @Get('/test')
+    @Get('/home')
     @Render('index')
-    getHomePage() {
-        const getData = this.marketViewService.marketSymbolView('BTCUSDT'); //todo: move to query param
-        console.log('Market Data:', getData);
+    async getHomePage() {
+        return await this.marketViewService.marketSymbolView('BTCUSDT');
+    }
 
-        return { message: JSON.stringify(getData) };
+    @Get('/about')
+    @Render('about')
+    getAboutPage() {
+        return {};
     }
 }

@@ -1,12 +1,7 @@
+# IVCF070126
 
-Infra:
-- App
-- MongoDB (caching data)
-- 
-
-Services:
-- Market/Exchange Store
-- BinanceApi
-- DataProcessing (Analyze)
-- WebLayer of some sort
-- 
+## Setup
+- `npm i`
+- `cp .env.template .env` (for local development)
+- `docker compose up -d`
+- `npm run start:dev`
